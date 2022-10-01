@@ -4,25 +4,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./assets/css/style.css"></link>
+    <link rel="stylesheet" href="./assets/css/style.css"></link>
     <title>Quiz Game</title>
 </head>
 <body>
     <header>
         <div class="high-score-button">View High Scores</div>
-        <div class="timer"></div>
+        <div class="timer">Timer</div>
     </header>
-    <main class="container">
-        <h2 id="question">Welcome to my Quiz</h2>
-        <div id ="answer-buttons" class ="button-grid">
-            <button class="button">Answer</button>
-            <button class="button">Answer</button>
-            <button class="button">Answer</button>
-            <button class="button">Answer</button>
+    <main>
+        <div class="wrapper">
+            <h1 id="question">Welcome to my Quiz</h1>
+            <div id ="answer-buttons" class ="button-grid">
+                <button class="button">Answer</button>
+                <button class="button">Answer</button>
+                <button class="button">Answer</button>
+                <button class="button">Answer</button>
+            </div>
+            <div class="controls">
+                <button id="start-button">Start</button>
+            </div>
         </div>
-        <div class="controls">
-            <button id="start-button">Start</button>
-        </div>
-    </main>
+    </main> 
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>
