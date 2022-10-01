@@ -34,7 +34,7 @@ h1{
 }
 
 .button-grid{
-    display:flex;
+    display:none;
     flex-direction: column;
 }
 
