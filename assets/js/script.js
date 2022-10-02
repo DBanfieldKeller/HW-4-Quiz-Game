@@ -64,6 +64,16 @@ function countdownScore () {
 
 // choose question to ask next
 // Fisher-Yates algorithm for shuffling question array//
+
+function shuffleQuestions(array) {
+    for (var i = array.length -1; i>0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+
 function setNextQuestion() {
 
 }
