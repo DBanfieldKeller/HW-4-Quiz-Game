@@ -1,6 +1,7 @@
 // DATA
 var startButton = document.getElementById("start-button");
 var answerButtons =document.getElementById("answer-buttons");
+var answersABCD = document.getElementsByClassName("button");
 var questionText = document.getElementById("question");
 var timer = document.getElementById("timer");
 var highScoreButton = document.getElementById("high-score-button");
@@ -63,7 +64,7 @@ function countdownScore () {
 // Fisher-Yates algorithm for shuffling question array//
 
 function shuffleQuestions(array) {
-    for (var i = array.length -1; i>0; i--) {
+    for (var i = array.length -1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         const temp = array[i];
         array[i] = array[j];
@@ -85,5 +86,10 @@ function setNextQuestion() {
 
 // display question
 function showQuestion() {
+    // write text to question
     questionText.innerText = questionSet[0].question;
+    for (var i = 0; i < questionSet[0].answers.length; i++) {
+        answersABCD[i].innerText = questionSet[0].answers[i].text
+    }
+    
 }
