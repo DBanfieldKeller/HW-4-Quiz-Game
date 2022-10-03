@@ -1,12 +1,16 @@
-// DATA
+// Dependencies
 var startButton = document.getElementById("start-button");
 var answerButtons =document.getElementById("answer-buttons");
 var answersABCD = document.getElementsByClassName("button");
 var questionText = document.getElementById("question");
 var timer = document.getElementById("timer");
 var highScoreButton = document.getElementById("high-score-button");
+var correctAnswer = document.getElementById("right-wrong")
+
+// Data
 // set starting time
 var timeLeft = 5;
+var currentQuestion = 0;
 
 // question data base 
 var questionSet = [
@@ -61,8 +65,8 @@ function countdownScore () {
     // TODO when incorrect answer timer -10
 
 // choose question to ask next
-// Fisher-Yates algorithm for shuffling question array//
 
+// Fisher-Yates algorithm for shuffling question array//
 function shuffleQuestions(array) {
     for (var i = array.length -1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -70,7 +74,6 @@ function shuffleQuestions(array) {
         array[i] = array[j];
         array[j] = temp;
     }
-
     shuffledArray = array
     return shuffledArray
 }
@@ -87,9 +90,23 @@ function setNextQuestion() {
 // display question
 function showQuestion() {
     // write text to question
-    questionText.innerText = questionSet[0].question;
-    for (var i = 0; i < questionSet[0].answers.length; i++) {
-        answersABCD[i].innerText = questionSet[0].answers[i].text
+    questionText.innerText = questionSet[currentQuestion].question;
+    for (var i = 0; i < questionSet[currentQuestion].answers.length; i++) {
+        // write answers to questions
+        answersABCD[i].innerText = questionSet[currentQuestion].answers[i].text
+        // indicate correct answer
+        answersABCD[i].dataset.state = questionSet[currentQuestion].answers[i].correct   
     }
     
+}
+
+for (var i=0; i < answersABCD.length; i++) {
+    answersABCD[i].addEventListener('click', function() {
+        console.log('clicked');
+        if( answersABCD[i].dataset.state === true) {
+          correctAnswer.style.color="green"
+          timeLeft +=10  
+        }
+        
+    })
 }
