@@ -12,7 +12,7 @@ var gameOver = document.getElementById("gameover-screen");
 // set starting time
 var timeLeft = 5;
 var currentQuestion = 0;
-var currentlyPlaying
+var currentlyPlaying = true;
 
 // question data base 
 var questionSet = [
@@ -36,42 +36,40 @@ var questionSet = [
     }
 ]
 
-// Start Game Function
+// Start Game
 startButton.addEventListener('click', function(){
     console.log("Started");
     startButton.setAttribute("class","hide");
     answerButtons.setAttribute("class","show-buttons");
     shuffleQuestions(questionSet);
-    showQuestion();
     countdownScore();
-    currentlyPlaying = true
-    console.log(currentlyPlaying)
-
-
+    runQuiz();
 })
 
-// Set up basic timer
+// timer function
 function countdownScore () {
     var timeInterval = setInterval(function () {
         // display time left
         timer.textContent = timeLeft;
         // break once timer hits 0, otherwise decrement timer
         // end game if timer hits 0
-        if(timeLeft === 0) {
+        if(timeLeft <= 0) {
             currentlyPlaying = false;
-            clearInterval(timeInterval);
+            clearInterval(timeInterval)
+            endGame();
             console.log(currentlyPlaying);
         } else {
             timeLeft--;
-            }
+        }
 
     }, 1000);
 }
 
-// check if game has ended
+// check if questions remaining, if not, set currentlyPlaying to false
 function questionsRemaining() {
     if(currentQuestion > (questionSet.length-1)) {
         currentlyPlaying = false;
+        endGame();
         console.log(currentlyPlaying);
     }
 }
@@ -95,6 +93,14 @@ var shuffleTest = shuffleQuestions(testArray);
 console.log(shuffleTest);
 console.log(testArray);
 
+
+// define function for transition to game over screen 
+function endGame(){
+    answerButtons.setAttribute("class","hide");
+    gameOver.setAttribute("class", "show-screen");
+    questionText.innerText = "Game Over"
+}
+
 // display question
 function showQuestion() {
     // write text to question
@@ -111,27 +117,23 @@ function showQuestion() {
     }
 }
 
-
+function runQuiz(){
+    showQuestion();
 for (var i=0; i < answersABCD.length; i++) {
     answersABCD[i].addEventListener('click', function() {
-        console.log('clicked');
         if( this.dataset.state === "true") {
             correctAnswer.innerText = "Correct!"
             correctAnswer.style.color= "var(--correct-color)";
             timeLeft +=10;
-            currentQuestion++;
-            questionsRemaining();
-            showQuestion();
             
         } else {
             correctAnswer.innerText = "Incorrect";
             correctAnswer.style.color = "var(--wrong-color)";
-            timeLeft -=10;
-            currentQuestion++;
-            questionsRemaining();
-            showQuestion()
-            
+            timeLeft -=10; 
         }
-        
+        currentQuestion++;
+        questionsRemaining();
+        showQuestion()  
     })
+}
 }
