@@ -23,7 +23,8 @@ header{
 
 main{
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
 }
 
@@ -31,7 +32,7 @@ h1{
     font-size: 40px;
 }
 
-.wrapper{
+.gameplay-screen{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -57,4 +58,13 @@ h1{
 .controls{
     display: flex;
     flex-direction: column;
+}
+
+.show-screen{
+    display: flex;
+    flex-direction: column;
+}
+
+.show-screen ol{
+    border: 2px solid black;
 }
