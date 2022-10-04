@@ -31,7 +31,7 @@ h1{
     font-size: 40px;
 }
 
-.wrapper{
+.gameplay-screen{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

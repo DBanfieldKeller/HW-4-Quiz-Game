@@ -5,12 +5,14 @@ var answersABCD = document.getElementsByClassName("button");
 var questionText = document.getElementById("question");
 var timer = document.getElementById("timer");
 var highScoreButton = document.getElementById("high-score-button");
-var correctAnswer = document.getElementById("right-wrong")
+var correctAnswer = document.getElementById("right-wrong");
+var gameOver = document.getElementById("gameover-screen");
 
 // Data
 // set starting time
 var timeLeft = 5;
 var currentQuestion = 0;
+var currentlyPlaying
 
 // question data base 
 var questionSet = [
@@ -42,6 +44,8 @@ startButton.addEventListener('click', function(){
     shuffleQuestions(questionSet);
     showQuestion();
     countdownScore();
+    currentlyPlaying = true
+    console.log(currentlyPlaying)
 
 
 })
@@ -51,15 +55,25 @@ function countdownScore () {
     var timeInterval = setInterval(function () {
         // display time left
         timer.textContent = timeLeft;
-        // break once timer hits 0
-        // otherwise decrement timer
+        // break once timer hits 0, otherwise decrement timer
+        // end game if timer hits 0
         if(timeLeft === 0) {
+            currentlyPlaying = false;
             clearInterval(timeInterval);
+            console.log(currentlyPlaying);
         } else {
             timeLeft--;
             }
 
     }, 1000);
+}
+
+// check if game has ended
+function questionsRemaining() {
+    if(currentQuestion > (questionSet.length-1)) {
+        currentlyPlaying = false;
+        console.log(currentlyPlaying);
+    }
 }
 
 // choose question to ask next
@@ -81,22 +95,22 @@ var shuffleTest = shuffleQuestions(testArray);
 console.log(shuffleTest);
 console.log(testArray);
 
-function setNextQuestion() {
-
-}
-
 // display question
 function showQuestion() {
     // write text to question
-    questionText.innerText = questionSet[currentQuestion].question;
-    for (var i = 0; i < questionSet[currentQuestion].answers.length; i++) {
-        // write answers to questions
-        answersABCD[i].innerText = questionSet[currentQuestion].answers[i].text
-        // indicate correct answer
-        answersABCD[i].dataset.state = questionSet[currentQuestion].answers[i].correct   
+    if(currentlyPlaying === false){
+        return
+    } else{
+        questionText.innerText = questionSet[currentQuestion].question;
+        for (var i = 0; i < questionSet[currentQuestion].answers.length; i++) {
+            // write answers to questions
+            answersABCD[i].innerText = questionSet[currentQuestion].answers[i].text
+            // indicate correct answer
+            answersABCD[i].dataset.state = questionSet[currentQuestion].answers[i].correct   
+        }
     }
-    
 }
+
 
 for (var i=0; i < answersABCD.length; i++) {
     answersABCD[i].addEventListener('click', function() {
@@ -106,13 +120,17 @@ for (var i=0; i < answersABCD.length; i++) {
             correctAnswer.style.color= "var(--correct-color)";
             timeLeft +=10;
             currentQuestion++;
+            questionsRemaining();
             showQuestion();
+            
         } else {
             correctAnswer.innerText = "Incorrect";
             correctAnswer.style.color = "var(--wrong-color)";
             timeLeft -=10;
             currentQuestion++;
+            questionsRemaining();
             showQuestion()
+            
         }
         
     })
