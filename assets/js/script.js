@@ -61,8 +61,6 @@ function countdownScore () {
 
     }, 1000);
 }
-    // TODO when correct answer timer +10
-    // TODO when incorrect answer timer -10
 
 // choose question to ask next
 
@@ -103,9 +101,18 @@ function showQuestion() {
 for (var i=0; i < answersABCD.length; i++) {
     answersABCD[i].addEventListener('click', function() {
         console.log('clicked');
-        if( answersABCD[i].dataset.state === true) {
-          correctAnswer.style.color="green"
-          timeLeft +=10  
+        if( this.dataset.state === "true") {
+            correctAnswer.innerText = "Correct!"
+            correctAnswer.style.color= "var(--correct-color)";
+            timeLeft +=10;
+            currentQuestion++;
+            showQuestion();
+        } else {
+            correctAnswer.innerText = "Incorrect";
+            correctAnswer.style.color = "var(--wrong-color)";
+            timeLeft -=10;
+            currentQuestion++;
+            showQuestion()
         }
         
     })
