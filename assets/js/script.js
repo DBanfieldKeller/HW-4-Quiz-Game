@@ -54,11 +54,10 @@ function countdownScore() {
         timer.textContent = timeLeft;
         // break once timer hits 0, otherwise decrement timer
         // end game if timer hits 0
-        if (timeLeft <= 0) {
+        if (timeLeft <= 0 || currentlyPlaying === false) {
             currentlyPlaying = false;
             clearInterval(timeInterval)
             endGame();
-            console.log(currentlyPlaying);
         } else {
             timeLeft--;
         }
@@ -102,6 +101,7 @@ function endGame() {
     playerScore = timeLeft;
     questionText.innerText = "Game Over\n You scored " + playerScore + " point(s)";
 }
+
 
 // display question
 function showQuestion() {
