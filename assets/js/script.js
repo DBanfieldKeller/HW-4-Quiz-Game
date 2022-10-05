@@ -7,13 +7,18 @@ var timer = document.getElementById("timer");
 var highScoreButton = document.getElementById("high-score-button");
 var correctAnswer = document.getElementById("right-wrong");
 var gameOver = document.getElementById("gameover-screen");
+var submitButton = document.getElementById("submit-score");
+var playerInitials = document.getElementById("initials");
+var highScoreList = document.getElementById("scoreboard");
 
 // Data
 // set starting time
-var timeLeft = 15;
+var timeLeft = 90;
 var currentQuestion = 0;
 var currentlyPlaying = true;
 var playerScore;
+var playerInitials;
+var noOfScores = 10;
 
 // question data base 
 var questionSet = [
@@ -34,18 +39,17 @@ var questionSet = [
             { text: "39", correct: false },
             { text: "-2", correct: false },
         ]
+    },
+    {
+        question: "typeof NaN would return what?",
+        answers: [
+            {text: "Number", correct: true},
+            {text: "Boolean", correct: false},
+            {text: "Variable", correct: false},
+            {text: "String", correct: false},
+        ]
     }
 ]
-
-// Start Game
-startButton.addEventListener('click', function () {
-    console.log("Started");
-    startButton.setAttribute("class", "hide");
-    answerButtons.setAttribute("class", "show-buttons");
-    shuffleQuestions(questionSet);
-    countdownScore();
-    runQuiz();
-})
 
 // timer function
 function countdownScore() {
@@ -53,7 +57,7 @@ function countdownScore() {
         // display time left
         timer.textContent = timeLeft;
         // break once timer hits 0, otherwise decrement timer
-        // end game if timer hits 0
+        // end game if timer hits 0 or if you run out of questions
         if (timeLeft <= 0 || currentlyPlaying === false) {
             currentlyPlaying = false;
             clearInterval(timeInterval)
@@ -70,11 +74,8 @@ function questionsRemaining() {
     if (currentQuestion > (questionSet.length - 1)) {
         currentlyPlaying = false;
         endGame();
-        console.log(currentlyPlaying);
     }
 }
-
-// choose question to ask next
 
 // Fisher-Yates algorithm for shuffling question array//
 function shuffleQuestions(array) {
@@ -87,12 +88,6 @@ function shuffleQuestions(array) {
     shuffledArray = array
     return shuffledArray
 }
-
-var testArray = ['1', '2', '3', '4', '5', '6', '7'];
-var shuffleTest = shuffleQuestions(testArray);
-console.log(shuffleTest);
-console.log(testArray);
-
 
 // define function for transition to game over screen 
 function endGame() {
@@ -118,7 +113,7 @@ function showQuestion() {
         }
     }
 }
-
+// gameplay loop
 function runQuiz() {
     showQuestion();
     for (var i = 0; i < answersABCD.length; i++) {
@@ -139,3 +134,51 @@ function runQuiz() {
         })
     }
 }
+
+function checkScores(score) {
+    // check scores, return blank if none available
+    var highScores = JSON.parse(localStorage.getItem("scores")) ?? [];
+    // compare current score to lowest score, if no lowest score, compare to negative infinity to allow for negative scores
+    var lowestScore = highScores[noOfScores - 1]?.score ?? Number.NEGATIVE_INFINITY;
+
+    if( score > lowestScore) {
+        saveScore(score, highScores);
+        showScores();
+    }
+}
+
+function saveScore(score, highScores) {
+    var initials = playerInitials.value;
+    var newScore = {initials, score};
+
+    // add score to list
+    highScores.push(newScore);
+    // sort the list
+    highScores.sort((a, b) => b.score - a.score);
+    // replace lowest score
+    highScores.splice(noOfScores);
+    // save
+    localStorage.setItem("scores",JSON.stringify(highScores));
+}
+
+// display scores
+function showScores() {
+    var highScores = JSON.parse(localStorage.getItem("scores")) ?? [];
+    scoreboard.innerHTML = highScores.map((score => `<li>${score.score} - ${score.initials}`)).join('')
+}
+
+// Start Game
+startButton.addEventListener('click', function () {
+    console.log("Started");
+    startButton.setAttribute("class", "hide");
+    answerButtons.setAttribute("class", "show-buttons");
+    shuffleQuestions(questionSet);
+    countdownScore();
+    runQuiz();
+})
+
+submitButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    checkScores(playerScore);
+    console.log(noOfScores);
+})
