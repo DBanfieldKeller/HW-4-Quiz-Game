@@ -7,6 +7,9 @@ var timer = document.getElementById("timer");
 var highScoreButton = document.getElementById("high-score-button");
 var correctAnswer = document.getElementById("right-wrong");
 var gameOver = document.getElementById("gameover-screen");
+var submitButton = document.getElementById("submit-score");
+var playerInitials = document.getElementById("initials");
+var highScoreList = document.getElementById("scoreboard");
 
 // Data
 // set starting time
@@ -14,6 +17,8 @@ var timeLeft = 15;
 var currentQuestion = 0;
 var currentlyPlaying = true;
 var playerScore;
+var playerInitials;
+var noOfScores = 10;
 
 // question data base 
 var questionSet = [
@@ -53,7 +58,7 @@ function countdownScore() {
         // display time left
         timer.textContent = timeLeft;
         // break once timer hits 0, otherwise decrement timer
-        // end game if timer hits 0
+        // end game if timer hits 0 or if you run out of questions
         if (timeLeft <= 0 || currentlyPlaying === false) {
             currentlyPlaying = false;
             clearInterval(timeInterval)
@@ -70,7 +75,6 @@ function questionsRemaining() {
     if (currentQuestion > (questionSet.length - 1)) {
         currentlyPlaying = false;
         endGame();
-        console.log(currentlyPlaying);
     }
 }
 
@@ -87,12 +91,6 @@ function shuffleQuestions(array) {
     shuffledArray = array
     return shuffledArray
 }
-
-var testArray = ['1', '2', '3', '4', '5', '6', '7'];
-var shuffleTest = shuffleQuestions(testArray);
-console.log(shuffleTest);
-console.log(testArray);
-
 
 // define function for transition to game over screen 
 function endGame() {
@@ -139,3 +137,44 @@ function runQuiz() {
         })
     }
 }
+
+function checkScores(score) {
+    var highScores = JSON.parse(localStorage.getItem("scores")) ?? [];
+    var lowestScore = highScores[noOfScores - 1]?.score ?? Number.NEGATIVE_INFINITY;
+
+    if( score > lowestScore) {
+        saveScore(score, highScores);
+        showScores();
+    }
+}
+
+function saveScore(score, highScores) {
+    var initials = playerInitials.value;
+    var newScore = {initials, score};
+
+    // add score to list
+    highScores.push(newScore);
+    // sort the list
+    highScores.sort((a, b) => b.score - a.score);
+    // replace lowest score
+    highScores.splice(noOfScores);
+    // save
+    localStorage.setItem("scores",JSON.stringify(highScores));
+}
+
+function showScores() {
+    var highScores = JSON.parse(localStorage.getItem("scores")) ?? [];
+    scoreboard.innerHTML = highScores.map((score => `<li>${score.score} - ${score.initials}`)).join('')
+}
+
+submitButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    checkScores(playerScore);
+    console.log(noOfScores);
+})
+
+highScoreButton.addEventListener('click',function (event){
+    event.preventDefault();
+    console.log("clicked"),
+    showScores();
+})
