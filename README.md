@@ -7,7 +7,7 @@ The quiz also contains scoreboard functionality. The scoreboard takes a user's i
 The quiz can be accessed at the following URL: https://dbanfieldkeller.github.io/Quiz-Game/
 
 The start page should appear as below:
-![Start Page](assets/images/Screenshot1.PNG)
+![Start Page](assets/images/screenshot1.PNG)
 
 When running the game should appear as below:
-![Gameplay](assets/images/Screenshot2.PNG)
+![Gameplay](assets/images/screenshot2.PNG)
