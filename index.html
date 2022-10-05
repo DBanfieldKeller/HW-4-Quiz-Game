@@ -13,6 +13,7 @@
         <div id="timer"></div>
     </header>
     <main>
+        <!-- gameplay elements -->
         <div class="gameplay-screen">
             <h1 id="question">Welcome to my Quiz</h1>
             <div id ="answer-buttons" class ="hide">
@@ -22,9 +23,11 @@
                 <button class="button" id="D-button" data-state="false">Answer</button>
             </div>
             <div class="controls">
+                <!-- start button -->
                 <button id="start-button">Start</button>
             </div>
         </div>
+        <!-- post game elements -->
         <div id="gameover-screen" class="hide">
             <div id="input-fields">
                 <form>
@@ -33,8 +36,7 @@
                     <button id="submit-score">Submit Your Score</button>
                 </form>
             </div>
-            <ol id="scoreboard">
-            </ol>
+            <ol id="scoreboard"></ol>
         </div>
         <h3 id="right-wrong"></h3>
     </main> 
